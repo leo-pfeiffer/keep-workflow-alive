@@ -1,18 +1,20 @@
 name: run main.py
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: '0 12 1 * *' # run every 1st day of the month at 12:00 UTC
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: production
     steps:
       - name: checkout repo content
-        uses: actions/checkout@v2 # checkout the repository content
+        uses: actions/checkout@v4 # checkout the repository content
 
       - name: setup python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10' # install the python version needed
 
@@ -23,5 +25,5 @@ jobs:
 
       - name: execute py script
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PAT_GITHUB: ${{ secrets.PAT_GITHUB }}
         run: python main.py
